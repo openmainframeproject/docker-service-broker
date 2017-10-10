@@ -9,3 +9,5 @@ def index():
     else:
         l = subprocess.check_output(['echo', 'test'])
         return request.form['docker']+" ran successfully and output was "+l
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=80)
