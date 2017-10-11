@@ -13,12 +13,12 @@
     <p class="card-text" style="text-align:center">For additional information about the docker container, click the ? button</p>
     <div class="dropdown" style="display:inline">
 <button class="btn btn-primary dropdown-toggle" type="button" id="docker-selector" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-Docker!{{fun}}
+Select your Service
 </button>
 <div class="dropdown-menu" aria-labelledby="about-us">
-<a class="dropdown-item" onclick='javascript:document.getElementById("docker-selector").innerHTML="test1"' href='#'>test1</a>
-<a class="dropdown-item" onclick='javascript:document.getElementById("docker-selector").innerHTML="test2"' href='#'>test2</a>
-<a class="dropdown-item" onclick='javascript:document.getElementById("docker-selector").innerHTML="test3"' href='#'>test3</a>
+{% for service in services %}
+<a class="dropdown-item" onclick='javascript:document.getElementById("docker-selector").innerHTML="{{service}}"' href='#'>{{service}}</a>
+{% endfor %}
 </div>
 </div>
 <button class="btn btn-primary" id="launch" style="float:right;display:inline" type="submit">Launch!</button>
@@ -27,6 +27,11 @@ Docker!{{fun}}
 $("#launch").click(function(){
     $.post("/", {"docker":$("#docker-selector").html()}).done(function(result){
         $("#body").prepend('<div class="alert alert-success" role="alert">'+result+'</div>');
+	window.setTimeout(function() {
+    		$(".alert-success").fadeTo(500, 0).slideUp(500, function(){
+        		$(this).remove(); 
+    		});
+	}, 5000);
     });
   });
 </script>
