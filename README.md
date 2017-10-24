@@ -26,4 +26,4 @@ start swarm:
 
 to run swarm:
 
->docker stack deploy -c frontend-stack.yml <name it>
+>docker stack deploy -c frontend-stack.yml [name it]
