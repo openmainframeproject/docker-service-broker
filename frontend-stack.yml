@@ -15,6 +15,24 @@ services:
       - "443:443"
     networks:
       - webnet
+
+  mysqldb:
+    image: sinenomine/mariadb-s390x
+    environment:
+      - MYSQL_DATABASE=test
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_USER=test_user
+      - MYSQL_PASSWORD=test_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - "/var/lib/mysql"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - webnet
+
   visualizer:
     image: sinenomine/visualizer-s390x
     ports:
