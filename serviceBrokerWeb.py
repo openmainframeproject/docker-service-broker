@@ -1,11 +1,14 @@
 from flask import Flask, render_template, request
 import subprocess
 from OpenSSL import SSL
-import sqlite3
+import MySQLdb
 
 app = Flask(__name__)
 
-db = sqlite3.connect("serviceBrokerWeb.db")
+db = MySQLdb.connect(host="148.100.4.231",  # your host 
+                     user="root",           # username
+                     passwd="pass",         # password
+                     db="ServiceBroker")       # name of database
 c = db.cursor()
 
 def runCMD(cmd):
@@ -21,13 +24,13 @@ def action(serviceData):
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'GET':
-	c.execute("select service_name from services")
+	c.execute("select service_name from Services")
         serviceData = list(c.fetchall())
 	for i in range(0, len(serviceData)):
 	    serviceData[i] = serviceData[i][0]
         return render_template("test.html", services=serviceData)
     else:
-	c.execute("select service_command, service_type from services where service_name=?", [request.form['docker']])
+	c.execute("select service_command, service_type from Services where service_name=%s", [request.form['docker']])
 	serviceData = c.fetchone()
         return request.form['docker']+" ran successfully and output was "+action(serviceData)
 if __name__ == "__main__":
