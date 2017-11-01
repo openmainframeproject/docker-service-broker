@@ -31,4 +31,4 @@ def index():
 	serviceData = c.fetchone()
         return request.form['docker']+" ran successfully and output was "+action(serviceData)
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=443, ssl_context='adhoc')
+    app.run(host='0.0.0.0', port=443, ssl_context=('./certs/cert.pem', './certs/key.pem'))
