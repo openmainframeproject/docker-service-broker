@@ -16,7 +16,7 @@ change port rules:
 
 start docker daemon:
 
->sudo nohup docker daemon -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock &
+>nohup docker daemon -g /data/docker -H tcp://127.0.0.1:2375 -H unix:///var/run/docker.sock &
 
 start swarm:
 

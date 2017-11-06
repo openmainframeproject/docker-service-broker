@@ -5,7 +5,8 @@ import MySQLdb
 
 app = Flask(__name__)
 
-db = MySQLdb.connect(host="148.100.4.231",  # your host 
+db = MySQLdb.connect(host="148.100.99.53",      # your host(manager node) 
+                     port=3306,
                      user="root",           # username
                      passwd="pass",         # password
                      db="ServiceBroker")       # name of database
@@ -24,13 +25,13 @@ def action(serviceData):
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'GET':
-	c.execute("select service_name from Services")
+	c.execute("select service_name from services")
         serviceData = list(c.fetchall())
 	for i in range(0, len(serviceData)):
 	    serviceData[i] = serviceData[i][0]
         return render_template("test.html", services=serviceData)
     else:
-	c.execute("select service_command, service_type from Services where service_name=%s", [request.form['docker']])
+	c.execute("select service_command, service_type from services where service_name=%s", [request.form['docker']])
 	serviceData = c.fetchone()
         return request.form['docker']+" ran successfully and output was "+action(serviceData)
 if __name__ == "__main__":
