@@ -19,14 +19,13 @@ services:
   mysqldb:
     image: sinenomine/mariadb-s390x
     environment:
-      - MYSQL_DATABASE=test
       - MYSQL_ROOT_PASSWORD=pass
       - MYSQL_USER=test_user
       - MYSQL_PASSWORD=test_pass
     ports:
       - "3306:3306"
     volumes:
-      - "/var/lib/mysql"
+      - "/data/mysql:/data/mysql"
     deploy:
       placement:
         constraints: [node.role == manager]

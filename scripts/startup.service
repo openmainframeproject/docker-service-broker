@@ -1,0 +1,11 @@
+[Unit]
+Description=starts docker instance using /data
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/data/docker-service-broker/scripts/startup.sh
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target
