@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import shlex, subprocess
+import subprocess
 from OpenSSL import SSL
 import MySQLdb
 
@@ -13,7 +13,6 @@ db = MySQLdb.connect(host="148.100.99.53",      # your host(manager node)
 c = db.cursor()
 
 def runCMD(cmd):
-    args = shlex.split(cmd)
     subprocess.Popen(cmd, shell=True)
     return 'test'
 
