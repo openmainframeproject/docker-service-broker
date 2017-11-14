@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import subprocess
+import shlex, subprocess
 from OpenSSL import SSL
 import MySQLdb
 
@@ -13,8 +13,9 @@ db = MySQLdb.connect(host="148.100.99.53",      # your host(manager node)
 c = db.cursor()
 
 def runCMD(cmd):
-    l = subprocess.check_output(cmd.split(" "))
-    return l
+    args = shlex.split(cmd)
+    subprocess.Popen(cmd, shell=True)
+    return 'test'
 
 def action(serviceData):
     if serviceData[1] == "CMD":
