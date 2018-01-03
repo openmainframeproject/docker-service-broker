@@ -27,3 +27,10 @@ start swarm:
 to run swarm:
 
 >docker stack deploy -c frontend-stack.yml [name it]
+
+
+
+
+to run vuejs(just example page atm, needs to be integrated to swarm)
+
+>docker run -p 80:80 -v /data/docker-service-broker/manager-interface/vue-app/dist:/usr/share/nginx/html -v /data/docker-service-broker/manager-interface/nginx/nginx.conf:/etc/nginx/conf.d/default.conf sinenomine/nginx-s390x

@@ -1,0 +1,5 @@
+For installation copy docker files to /usr/local/bin:
+# cp docker* /usr/local/bin
+
+Start docker daemon, e.g. with:
+# docker daemon -s overlay
