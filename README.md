@@ -12,7 +12,7 @@ worker nodes(requires at least one)
 copy paste output of swarm init on manager
 
 start services
->docker stack deploy -c frontend-stack.yml [name it]
+>docker stack deploy -c docker-stack.yml [name it]
 
 
 RHEL
@@ -31,4 +31,4 @@ start swarm:
 
 to run swarm:
 
->docker stack deploy -c frontend-stack.yml [name it]
+>docker stack deploy -c docker-stack.yml [name it]
