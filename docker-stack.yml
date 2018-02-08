@@ -47,6 +47,7 @@ services:
     image: sinenomine/mariadb-s390x
     environment:
       - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_DATABASE=services
       - MYSQL_USER=test_user
       - MYSQL_PASSWORD=test_pass
     ports:
