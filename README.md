@@ -1,16 +1,21 @@
 # docker-service-broker
 
-To run directly
+SLES
 
->./run.sh
+on every node
+>iptables -I INPUT -p tcp --dport 2377 -j ACCEPT
 
-Then navigate to browser 127.0.0.1:5000 and view poc
+Manager node
+>docker swarm init
+
+worker nodes(requires at least one)
+copy paste output of swarm init on manager
+
+start services
+>docker stack deploy -c docker-stack.yml [name it]
 
 
-
-To run as docker swarm
-
-change port rules:
+RHEL
 
 >iptables -I INPUT -p tcp --dport 2377 -j ACCEPT
 
@@ -26,4 +31,4 @@ start swarm:
 
 to run swarm:
 
->docker stack deploy -c frontend-stack.yml [name it]
+>docker stack deploy -c docker-stack.yml [name it]
