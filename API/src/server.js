@@ -31,11 +31,23 @@ app.get("/getServices",function(req,res) {
     });
 }); 
 
-app.get("/getActiveServices",function(req,res) {                                                                                                                                  con.query("SELECT * FROM active_services", function (err, result, fields) {                                                                                                        res.send(result);                                                                                                                                                   });                                                                                                                                                                 });
+app.get("/getActiveServices",function(req,res) {
+	con.query("SELECT * FROM active_services", function (err, result, fields) {
+		res.send(result);
+	});
+});
+
+
+//support json format
+app.use( bodyParser.json() );
 
 app.post("/",function(req,res)
 {
-    con.query("insert into services(ID) values(3);", function (err, result, fields)
+	var name = req.body.name,
+		description = req.body.description,
+		version = req.body.version,
+		fields = req.body.fields;
+	con.query("insert into services(name, description, version, fields) values(name, description, version, fields);", function (err, result, fields)
         {
             res.send(result);
         });
