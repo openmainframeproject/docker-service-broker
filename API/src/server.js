@@ -43,11 +43,14 @@ app.use( bodyParser.json() );
 
 app.post("/",function(req,res)
 {
+	console.log(req.body);
 	var name = req.body.name,
 		description = req.body.description,
 		version = req.body.version,
-		fields = req.body.fields;
-	con.query("insert into services(name, description, version, fields) values(name, description, version, fields);", function (err, result, fields)
+		fields = JSON.stringify(req.body.fields);
+	con.query("insert into services(name, description, version, fields) values (?, ?, ?, ?);", 
+		[name, description, version, fields],
+		function (err, result, fields)
         {
             res.send(result);
         });
