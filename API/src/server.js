@@ -41,14 +41,14 @@ app.get("/getActiveServices",function(req,res) {
 //support json format
 app.use( bodyParser.json() );
 
-app.post("/",function(req,res)
+app.post("/startService",function(req,res)
 {
 	console.log(req.body);
 	var name = req.body.name,
 		description = req.body.description,
 		version = req.body.version,
 		fields = JSON.stringify(req.body.fields);
-	con.query("insert into services(name, description, version, fields) values (?, ?, ?, ?);", 
+	con.query("insert into active_services(name, description, version, fields) values (?, ?, ?, ?);", 
 		[name, description, version, fields],
 		function (err, result, fields)
         {
