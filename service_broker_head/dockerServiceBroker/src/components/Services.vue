@@ -9,7 +9,7 @@
             <div class="panel-body">
               <p><span class="badge alert-info"> Description: </span> {{ modalService.description }} </p>
               <hr>
-              <div v-for="field in modalService.fields">
+              <div v-for="field in JSON.parse(modalService.fields)">
               <label style="display:inline;float:left"> {{ field.label }} </label> <input v-model="field.value" style="display:inline;float:right" type="input" :placeholder="field.placeholder" :name="field.name">
             </div>
           </div>
@@ -68,7 +68,6 @@ export default {
       this.showModal=false;
     },
     populateModal(service){
-      service.fields = JSON.parse(service.fields);
       this.modalService = service;
       this.showModal=true;
     },
