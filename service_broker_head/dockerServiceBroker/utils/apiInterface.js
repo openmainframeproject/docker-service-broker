@@ -26,7 +26,11 @@ function getActiveServices(){
 	})
 }
 function startService(service){
-	alert(JSON.stringify(service) +"\n STARTED");
+	service.auth = getCookie("auth")
+	return axios.post(baseUrl+'/', 
+	    JSON.stringify(service)
+	)
+	alert("Your service is currently launching.");
 }
 
 function stopService(service){
