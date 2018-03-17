@@ -56,4 +56,17 @@ app.post("/startService",function(req,res)
         });
 });
 
+app.delete("/endService", function(req,res)
+{
+	console.log(req.body);
+        var name = req.body.name;
+	
+	con.query("delete from active_services where name = ?;",
+		[name],
+		function (err, result, fields)
+	{
+            res.send(result);
+        });
+});
+
 app.listen(3000);
