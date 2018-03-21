@@ -22,8 +22,22 @@ var con = mysql.createConnection({
     database: 'services'
 });
 
-//app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: true }));
+app.get("/isAuthed",function(req,res) {
+    authData = req.query.auth;
+    data = Buffer.from(authData, 'base64').toString().split(":");
+    username = data[0];
+    password = data[1];
+    con.query("SELECT * from users where username=? and password=?", [username, password], function(err, results, fields){
+      authObj=Object();
+      authObj.auth=false;
+      if (results.length===1){
+        authObj.auth=true;
+        res.send(authObj);
+      }else{
+        res.send(authObj);
+      }
+    });
+});
 
 app.get("/getServices",function(req,res) {
     con.query("SELECT * FROM services", function (err, result, fields) {
