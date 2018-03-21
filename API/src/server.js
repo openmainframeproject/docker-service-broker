@@ -5,15 +5,20 @@ var mysql = require("mysql");
 var bodyParser = require("body-parser");
 var app = express();
 
-app.use(function(req, res, next) {
-   res.setHeader('Access-Control-Allow-Origin', '*');
-   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-   res.setHeader('Access-Control-Allow-Credentials', true);
-   res.setHeader('Content-Type', 'application/json');
-   next();
-});
-
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.sendStatus(200);
+    }
+    else {
+      next();
+    }
+};
+app.use(allowCrossDomain);
 
 var con = mysql.createConnection({
     host: '148.100.98.185',

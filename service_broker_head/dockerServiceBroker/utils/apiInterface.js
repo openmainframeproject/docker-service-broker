@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const baseUrl = "http://localhost:3000";
 
-export {isAuthed, getServices, getActiveServices, startService, stopService, modifyService, switchDatabase, stopSwarm, startSwarm};
+export {isAuthed, getServices, getActiveServices, startService, stopService, switchDatabase, stopSwarm, startSwarm};
 
 function getCookie(cookiename) 
   {
@@ -28,10 +28,10 @@ function getActiveServices(){
 function startService(service){
 	service.auth = getCookie("auth")
 	service.fields=JSON.parse(service.fields)
-	return axios.post(baseUrl+'/', 
-	    service
-	)
 	alert("Your service is currently launching.");
+	return axios.post(baseUrl+'/startService', 
+	    service);
+	
 }
 
 function stopService(service){

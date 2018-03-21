@@ -75,6 +75,7 @@ export default {
       startService(this.modalService);
       this.showModal=false;
       this.modalService='';
+      location.reload();
     },
     getServ() {
       const thisClass = this;
