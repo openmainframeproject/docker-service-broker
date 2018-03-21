@@ -43,6 +43,19 @@ services:
 
   #API
 
+  API:
+    image: api
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "3000:3000"
+    networks:
+        - webnet
+
   mysqldb:
     image: sinenomine/mariadb-s390x
     environment:
