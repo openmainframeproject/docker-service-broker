@@ -48,6 +48,21 @@ app.get("/getServices",function(req,res) {
     con.query("SELECT * FROM services", function (err, result, fields) {
         res.send(result);
     });
+});
+
+app.get("/getQueuedServices",function(req,res) {
+    con.query("SELECT * FROM active_services where status='initializing'", function (err, result, fields) {
+        res.send(result);
+    });
+}); 
+
+app.get("/claim",function(req,res) {
+    id = req.query.id
+    workerid=req.query.workerid
+    con.query("update active_services set status='claimed', workerID=? where id=?",[workerid, id], function (err, result, fields) {
+        console.log("claimed");
+        res.send(result);
+    });
 }); 
 
 app.get("/getActiveServices",function(req,res) {
@@ -71,6 +86,8 @@ app.post("/startService",function(req,res)
 		[name, description, version, fields],
 		function (err, result, fields)
         {
+          console.log("got here");
+          console.log(err);
             res.send(result);
         });
 });
