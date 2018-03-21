@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { getActiveServices } from '../../utils/apiInterface';
+import { isAuthed } from '../../utils/apiInterface';
 import AppNav from './AppNav';
 import Services from './Services';
 import activeServices from './ActiveServices';
@@ -18,6 +18,20 @@ export default {
     AppNav,
     Services,
     activeServices,
+  },
+  data(){
+  },
+  methods:{
+    isLoggedIn() {
+      isAuthed().then(function(data){
+        if (!data.data.auth){
+          window.location.href="/";
+        }
+      });
+    },
+  },
+  created(){
+    this.isLoggedIn();
   }
 };
 </script>
