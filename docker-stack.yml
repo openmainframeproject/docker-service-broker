@@ -54,6 +54,10 @@ services:
         condition: on-failure
     ports:
       - "3000:3000"
+    
+    volumes:
+      - "/data/docker:/usr/bin/docker"
+      - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
         - webnet
 

@@ -90,6 +90,16 @@ app.post("/startService",function(req,res)
           console.log(err);
             res.send(result);
         });
+
+        const { exec } = require('child_process');
+        exec('docker service create docker_service_broker', (error, stdout, stderr) => {
+          if (error) {
+            console.error(`exec error: ${error}`);
+            return;
+          }
+          console.log(`stdout: ${stdout}`);
+          console.log(`stderr: ${stderr}`);
+        });
 });
 
 app.delete("/endService", function(req,res)
@@ -98,8 +108,8 @@ app.delete("/endService", function(req,res)
         var name = req.body.name;
 	
 	con.query("delete from active_services where name = ?;",
-		[name],
-		function (err, result, fields)
+	    [name],
+            function (err, result, fields)
 	{
             res.send(result);
         });
