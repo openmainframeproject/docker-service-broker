@@ -78,9 +78,11 @@ export default {
     sService(service){
     	if (confirm("Are you sure you want to stop the service?")){
     		stopService(service);
+        location.reload();
     	}else{
     		return;
     	}
+
     },
 
     details(service){

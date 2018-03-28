@@ -35,7 +35,11 @@ function startService(service){
 }
 
 function stopService(service){
-	alert(JSON.stringify(service)+"\n STOPPED");
+	service.auth = getCookie("auth")
+	service.fields=JSON.parse(service.fields);
+	alert("Your service is currently terminating.");
+	return axios.post(baseUrl+'/stopService', 
+	    service);
 }
 
 function isAuthed(){
