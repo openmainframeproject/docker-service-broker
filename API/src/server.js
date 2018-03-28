@@ -72,10 +72,17 @@ app.get("/claim",function(req,res)
 {
     id = req.query.id
     workerid=req.query.workerid
-    con.query("update active_services set status='claimed', workerID=? where id=?",[workerid, id], function (err, result, fields)
+    con.query("SELECT * FROM active_services where ID=? AND status!='claimed'",[id], function (err, result, fields)
     {
-        console.log("claimed");
-        res.send(result);
+        if (result){
+            con.query("update active_services set status='claimed', workerID=? where id=?",[workerid, id], function (err, result, fields)
+            {
+                console.log("claimed");
+                res.send(result);
+            });
+        }else{
+            res.send({"error", "Claim failed."})
+        }
     });
 });
 
