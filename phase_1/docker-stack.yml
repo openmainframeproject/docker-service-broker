@@ -15,8 +15,8 @@ services:
     ports:
       - "9999:8000"
     volumes:
-      - "/data/docker-service-broker/administrator_panel/vue-app/dist:/usr/share/nginx/html"
-      - "/data/docker-service-broker/administrator_panel/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
+      - "/data/docker-service-broker/phase_1/administrator_panel/vue-app/dist:/usr/share/nginx/html"
+      - "/data/docker-service-broker/phase_1/administrator_panel/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
     networks:
         - webnet
 
@@ -36,9 +36,9 @@ services:
     ports:
       - "80:8000"
     volumes:
-      - "/data/docker-service-broker/service_broker_head/dockerServiceBroker/dist:/usr/share/nginx/html"
-      - "/data/docker-service-broker/service_broker_head/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
-      - "/data/docker-service-broker/service_broker_head/logs:/var/log/nginx"
+      - "/data/docker-service-broker/phase_1/service_broker_head/dockerServiceBroker/dist:/usr/share/nginx/html"
+      - "/data/docker-service-broker/phase_1/service_broker_head/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
+      - "/data/docker-service-broker/phase_1/service_broker_head/logs:/var/log/nginx"
     networks:
         - webnet
 
@@ -95,3 +95,4 @@ services:
       - webnet
 networks:
   webnet:
+
