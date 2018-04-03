@@ -118,7 +118,7 @@ app.post("/startService",function(req,res)
     var id = con.query("SELECT ID FROM active_services ORDER BY id DESC LIMIT 1;",
         function (err, result, fields)
     {
-        console.log("result");
+        console.log(result);
         console.log(err);
         var id = result[0].ID;
         startService(id);
@@ -143,16 +143,46 @@ app.post("/startService",function(req,res)
     }
 });
 
-app.delete("/endService", function(req,res)
+app.post("/addGroup",function(req,res)
 {
     console.log(req.body);
-    var name = req.body.name;
+    var group_id = req.body.group_id,
+            service_id = req.body.service_id;
+    con.query("insert into groups_services(group_id, service_id) values (?, ?);",
+        [group_id, service_id],
+        function (err, result, fields)
+    {
+        console.log("got here");
+        console.log(err);
+        res.send(result);
+    });
+});
 
-    con.query("delete from active_services where name = ?;",
-        [name],
+
+app.post("/stopService", function(req,res)
+{
+    console.log(req.body);
+    var id = req.body.ID,
+	name = req.body.name;
+
+    con.query("delete from active_services where id = ?;",
+        [id],
         function (err, result, fields)
     {
         res.send(result);
+    });
+
+    const { exec } = require('child_process');
+    //name + ID to make unique identifier which is still readable
+    exec('docker service rm ' + name + id, (error, stdout, stderr) =>
+    {
+        if (error)
+        {
+            console.error(`exec error: ${error}`);
+            return;
+        }
+        console.log(`stdout: ${stdout}`);
+        console.log(`stderr: ${stderr}`);
     });
 });
 
