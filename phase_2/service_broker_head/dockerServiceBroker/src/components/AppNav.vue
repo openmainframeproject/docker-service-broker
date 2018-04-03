@@ -5,8 +5,7 @@
     </div>
     <ul class="nav navbar-nav navbar-right">
       <li>
-        <button class="btn btn-danger log" v-show="isAdmin" @click="addGroup()">Add Group</button>
-        <button class="btn btn-danger log" v-show="isAdmin" @click="addService()">Add Service</button>
+        <span id="dynamicButtons"></span>
         <button class="btn btn-danger log" v-show="isLogged" @click="dashboard()">Dashboard</button>
         <button class="btn btn-danger log" v-show="isLogged" @click="handleLogout()">Log out</button>
         <button class="btn btn-info log" v-show="!isLogged" @click="handleLogin()">Log In</button>
@@ -23,16 +22,12 @@ export default {
   data() {
       return{
         isLogged: false,
-        isAdmin: false
       }
   },
   methods: {
     handleLogout(){
       document.cookie="auth=;"
       window.location.href="/";
-    },
-    admin(){
-      this.isAdmin=window.location.href.indexOf('admin')>0
     },
     handleLogin(){
       window.location.href="/";
@@ -50,7 +45,6 @@ export default {
   },
   mounted(){
       this.isLoggedIn();
-      this.admin();
     }
 };
 </script>

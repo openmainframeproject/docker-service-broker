@@ -57,6 +57,7 @@
         </div>
           <hr>
           <p><button style="float:left" @click="populateModal(group)" class="btn btn-info log">Launch Group</button></p>
+          <p><button style="float:right;" v-show="isAdmin" @click="delGroup(group)" class="btn btn-info log">Delete Group</button></p>
           <p><button style="float:right;" class="btn btn-info log">Modify Group</button></p>
         </div>
       </div>
@@ -65,7 +66,7 @@
 </template>
 
 <script>
-import { getGroups, startGroup } from '../../utils/apiInterface';
+import { getGroups, startGroup, deleteGroup } from '../../utils/apiInterface';
 import Modal from './Modal';
 export default {
   name: 'groups',
@@ -75,6 +76,7 @@ export default {
       groups: [],
       search: '',
       modalGroup: '',
+      isAdmin:false
     };
   },
   components:{
@@ -87,6 +89,9 @@ export default {
     closeModal(){
       this.showModal=false;
     },
+    isAd(){
+      this.isAdmin=document.location.href.indexOf("admin")>0
+    },
     populateModal(group){
       this.modalGroup = group;
       this.showModal=true;
@@ -96,6 +101,10 @@ export default {
       this.showModal=false;
       this.modalGroup='';
       location.reload();
+    },
+    delGroup(group){
+      deleteGroup(group);
+      // location.reload();
     },
     getGroup() {
       const thisClass = this;
@@ -108,6 +117,7 @@ export default {
   },
   mounted() {
     this.getGroup();
+    this.isAd()
   },
   computed: {
     filteredList() {

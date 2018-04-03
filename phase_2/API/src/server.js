@@ -8,7 +8,7 @@ var app = express();
 var allowCrossDomain = function(req, res, next)
 {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
     // intercept OPTIONS method
@@ -109,6 +109,7 @@ app.get("/getQueuedServices",function(req,res)
     });
 });
 
+
 app.get("/claim",function(req,res)
 {
     id = req.query.id
@@ -182,6 +183,34 @@ app.post("/startService",function(req,res)
             console.log(`stderr: ${stderr}`);
         });
     }
+});
+
+app.post("/addGroup",function(req,res)
+{
+    con.query("insert into groups (name, description) values (?,?)",[req.body.name, req.body.description], function (err, result, fields)
+    {
+        res.send(result);
+    });
+});
+
+app.post("/addToGroup",function(req,res)
+{
+    con.query("insert into groups_services (group_id, service_id) values (?,?)",[req.body.group_id, req.body.service_id], function (err, result, fields)
+    {
+        res.send(result);
+    });
+});
+
+
+app.post("/deleteGroup",function(req,res)
+{
+    con.query("delete from groups_services where group_id=?",[req.body.ID], function (err, result, fields)
+    {
+        con.query("delete from groups where ID=?",[req.body.ID], function (err, result, fields)
+        {
+            res.send({"completed":true})
+        });
+    });
 });
 
 app.delete("/endService", function(req,res)

@@ -39,7 +39,7 @@
           <p><span class="badge alert-info"> Version: </span> {{ service.version }} </p>
           <hr>
           <p><button style="float:left" @click="populateModal(service)" class="btn btn-info log">Launch Service</button></p>
-          <p><button style="float:right;" class="btn btn-info log">Modify Service</button></p>
+          <p><button style="float:right;" @click="addGroup(service)" class="btn btn-info log">Add to Group</button></p>
         </div>
       </div>
     </div>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { getServices, startService } from '../../utils/apiInterface';
+import { addToGroup, getGroups, getServices, startService } from '../../utils/apiInterface';
 import Modal from './Modal';
 export default {
   name: 'services',
@@ -57,6 +57,7 @@ export default {
       services: [],
       search: '',
       modalService: '',
+      groups:""
     };
   },
   components:{
@@ -68,6 +69,16 @@ export default {
     // },
     closeModal(){
       this.showModal=false;
+    },
+    addGroup(service){
+      var string=""
+      for (var i=0;i<this.groups.length;i++){
+        var group = this.groups[i];
+        string+=group.ID+" - "+group.name+"\n"
+      }
+      string+="Pick a group ID:"
+      var groupID = prompt(string)
+      addToGroup({"group_id":groupID, "service_id":service.ID})
     },
     populateModal(service){
       this.modalService = service;
@@ -82,14 +93,22 @@ export default {
     getServ() {
       const thisClass = this;
       function set(data){
-        thisClass.services =data.data;
+        thisClass.services=data.data;
       }
       getServices().then(set);
-
     },
+    getGr() {
+      const thisClass = this;
+      function set(data){
+        thisClass.groups=data.data;
+      }
+      getGroups().then(set);
+    },
+
   },
   mounted() {
     this.getServ();
+    this.getGr();
   },
   computed: {
     filteredList() {

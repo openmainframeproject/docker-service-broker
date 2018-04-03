@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const baseUrl = "http://localhost:3000";
 
-export {isAuthed, getServices, getActiveServices, getGroups, startService, stopService, switchDatabase, stopSwarm, startSwarm};
+export {isAuthed, getServices, startGroup, addToGroup, addGroup, deleteGroup, addService, getActiveServices, getGroups, startService, stopService, switchDatabase, stopSwarm, startSwarm};
 
 function getCookie(cookiename) 
   {
@@ -35,6 +35,19 @@ function getGroups(){
 	})
 }
 
+function addGroup(group){
+	group.auth = getCookie("auth")
+	alert("Group added!");
+	return axios.post(baseUrl+'/addGroup', 
+	    group);
+}
+
+function addToGroup(data){
+	data.auth = getCookie("auth")
+	alert("Added!");
+	return axios.post(baseUrl+'/addToGroup', 
+	    data);
+}
 
 function startService(service){
 	service.auth = getCookie("auth")
@@ -54,6 +67,13 @@ function stopService(service){
 	alert("Your service is currently terminating.");
 	return axios.post(baseUrl+'/stopService', 
 	    service);
+}
+
+function deleteGroup(group){
+	group.auth = getCookie("auth")
+	alert("Your group is currently terminating.");
+	return axios.post(baseUrl+'/deleteGroup', 
+	    group);
 }
 
 function isAuthed(){
