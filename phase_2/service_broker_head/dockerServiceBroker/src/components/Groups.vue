@@ -55,7 +55,7 @@
         </span>
         </div>
           <hr>
-          <p><button style="float:left" @click="populateModal(group)" class="btn btn-info log">Launch Group</button></p>
+          <p><button style="float:left" @click="launchGroup(group)" class="btn btn-info log">Launch Group</button></p>
           <p><button style="float:right;" v-show="isAdmin" @click="delGroup(group)" class="btn btn-info log">Delete Group</button></p>
         </div>
       </div>
@@ -103,6 +103,10 @@ export default {
     delGroup(group){
       deleteGroup(group);
       location.reload();
+    },
+    launchGroup(group){
+      startGroup(group);
+      // location.reload();
     },
      removeFromG(service,group){
       removeFromGroup({"group_id":group.ID, "service_id":service.ID});

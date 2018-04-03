@@ -43,7 +43,10 @@ function addGroup(group){
 }
 
 function startGroup(group){
-
+	data.auth = getCookie("auth")
+	alert("Group Launched!");
+	return axios.post(baseUrl+'/startGroup', 
+	    group);
 }
 
 function addService(service){
