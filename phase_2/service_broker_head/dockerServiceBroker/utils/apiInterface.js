@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const baseUrl = "http://localhost:3000";
 
-export {isAuthed, getServices, startGroup, addToGroup, addGroup, deleteGroup, addService, getActiveServices, getGroups, startService, stopService, switchDatabase, stopSwarm, startSwarm};
+export {isAuthed, getServices, removeFromGroup, startGroup, addToGroup, addGroup, deleteGroup, addService, getActiveServices, getGroups, startService, stopService, switchDatabase, stopSwarm, startSwarm};
 
 function getCookie(cookiename) 
   {
@@ -42,6 +42,18 @@ function addGroup(group){
 	    group);
 }
 
+function startGroup(group){
+
+}
+
+function addService(service){
+	service.auth = getCookie("auth")
+	// service.fields=JSON.parse(service.fields)
+	alert("Service Added!");
+	return axios.post(baseUrl+'/addService', 
+	    service);
+}
+
 function addToGroup(data){
 	data.auth = getCookie("auth")
 	alert("Added!");
@@ -49,17 +61,31 @@ function addToGroup(data){
 	    data);
 }
 
+function removeFromGroup(data){
+	data.auth = getCookie("auth")
+	alert("Removed!");
+	return axios.post(baseUrl+'/removeFromGroup', 
+	    data);
+}
+
+
+function deleteGroup(group){
+	group.auth = getCookie("auth")
+	alert("Your group is currently terminating.");
+	return axios.post(baseUrl+'/deleteGroup', 
+	    group);
+}
+
 function startService(service){
 	service.auth = getCookie("auth")
-	service.fields=JSON.parse(service.fields)
+	// service.fields=JSON.parse(service.fields)
 	alert("Your service is currently launching.");
 	return axios.post(baseUrl+'/startService', 
 	    service);
 	
 }
 
-function startGroup(group){
-}
+
 
 function stopService(service){
 	service.auth = getCookie("auth")
@@ -69,12 +95,7 @@ function stopService(service){
 	    service);
 }
 
-function deleteGroup(group){
-	group.auth = getCookie("auth")
-	alert("Your group is currently terminating.");
-	return axios.post(baseUrl+'/deleteGroup', 
-	    group);
-}
+
 
 function isAuthed(){
 	return axios.get(baseUrl+'/isAuthed', {

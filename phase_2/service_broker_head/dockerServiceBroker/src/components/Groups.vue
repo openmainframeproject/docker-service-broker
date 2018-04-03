@@ -48,8 +48,7 @@
                 <p><span class="badge alert-info"> Description: </span> {{ service.description }} </p>
                 <p><span class="badge alert-info"> Version: </span> {{ service.version }} </p>
                 <hr>
-                <p><button style="float:left" @click="populateModal(service)" class="btn btn-info log">Launch Service</button></p>
-                <p><button style="float:right;" class="btn btn-info log">Modify Service</button></p>
+                <p style="text-align:center;margin:auto"><button @click="removeFromG(service,group)" class="btn btn-info log">Remove From Group</button></p>
               </div>
             </div>
           </div>
@@ -58,7 +57,6 @@
           <hr>
           <p><button style="float:left" @click="populateModal(group)" class="btn btn-info log">Launch Group</button></p>
           <p><button style="float:right;" v-show="isAdmin" @click="delGroup(group)" class="btn btn-info log">Delete Group</button></p>
-          <p><button style="float:right;" class="btn btn-info log">Modify Group</button></p>
         </div>
       </div>
     </div>
@@ -66,7 +64,7 @@
 </template>
 
 <script>
-import { getGroups, startGroup, deleteGroup } from '../../utils/apiInterface';
+import { removeFromGroup, getGroups, startGroup, deleteGroup } from '../../utils/apiInterface';
 import Modal from './Modal';
 export default {
   name: 'groups',
@@ -104,7 +102,11 @@ export default {
     },
     delGroup(group){
       deleteGroup(group);
-      // location.reload();
+      location.reload();
+    },
+     removeFromG(service,group){
+      removeFromGroup({"group_id":group.ID, "service_id":service.ID});
+      location.reload();
     },
     getGroup() {
       const thisClass = this;

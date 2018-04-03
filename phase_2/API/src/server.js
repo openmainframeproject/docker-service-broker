@@ -65,12 +65,7 @@ app.get("/getGroups",function(req,res)
 {
     con.query("SELECT * FROM groups", function (err, groups, fields1)
     {
-            groupIDs = []
-            for (i =0;i<groups.length;i++){
-                groupIDs.push(groups[i].ID)
-            }
-            groupIDs=groupIDs.join(",")
-            con.query("select * from groups_services where group_id in (?)",[groupIDs], function (err, groups_services, fields2){
+            con.query("select * from groups_services where group_id in (select id from groups)", function (err, groups_services, fields2){
                 con.query("SELECT * FROM services", function (err, services, fields2)
                 {
                     retGroups = []
@@ -86,7 +81,6 @@ app.get("/getGroups",function(req,res)
                         };
                         for (y=0;y<services.length;y++){
                             service=services[y];
-                            console.log(service.ID);
                             if (servicesList.indexOf(service.ID) != -1){
                                 group.services.push(service);
                             }
@@ -196,6 +190,17 @@ app.post("/addGroup",function(req,res)
 app.post("/addToGroup",function(req,res)
 {
     con.query("insert into groups_services (group_id, service_id) values (?,?)",[req.body.group_id, req.body.service_id], function (err, result, fields)
+    {
+        res.send(result);
+    });
+});
+
+
+app.post("/removeFromGroup",function(req,res)
+{
+    console.log("got here");
+    console.log(req.body);
+    con.query("delete from groups_services where group_id=? and service_id=?",[req.body.group_id, req.body.service_id], function (err, result, fields)
     {
         res.send(result);
     });

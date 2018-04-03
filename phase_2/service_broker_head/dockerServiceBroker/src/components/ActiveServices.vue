@@ -10,7 +10,7 @@
           <p><span class="badge alert-info"> Description: </span> {{ modalService.description }} </p>
           <hr>
           <div v-for="field in modalService.fields">
-          <label style="display:inline;float:left"> {{ field.label }} </label> <input v-model="field.value" style="display:inline;float:right" type="input" disabled :placeholder="field.placeholder" :name="field.name">
+          <label style="display:inline;float:left"> {{ modalService.fields[0].label }} </label> <input v-model="modalService.fields[0].value" style="display:inline;float:right" type="input" disabled :placeholder="modalService.fields[0].placeholder" :name="modalService.fields[0].name">
         </div>
       </div>
     </div>
@@ -45,6 +45,11 @@
           </div>
           <p><span class="badge alert-info"> Uptime: </span> {{ service.uptime }} </p>
           <p><span class="badge alert-info"> Version: </span> {{ service.version }} </p>
+          <div v-for="field in JSON.parse(service.fields)">
+              <div v-show="field.display" id="container" style="display:block; height:3rem;">
+              <p><span class="badge alert-info">{{ field.label }} </span> {{ field.value }} </p>
+              </div>
+          </div>
           <hr>
           <p><button style="float:left" @click="sService(service)" class="btn btn-info log">Stop Service</button></p>
           <p><button style="float:right;" @click="details(service)" class="btn btn-info log">Details</button></p>
@@ -64,7 +69,7 @@ export default {
       showModal: false,
       services: [],
       search: '',
-      modalService: '',
+      modalService: {},
     };
   },
   components:{
@@ -86,17 +91,11 @@ export default {
     },
 
     details(service){
-      service.fields = JSON.parse(service.fields);
       this.modalService = service;
       this.showModal=true;
     },
     closeModal(){
       this.showModal=false;
-    },
-    submitAndClose(){
-      // modifyService(this.modalService);
-      this.showModal=false;
-      this.modalService='';
     },
     getAServices() {
       const thisClass = this;

@@ -9,7 +9,7 @@
             <div class="panel-body">
               <p><span class="badge alert-info"> Description: </span> {{ modalService.description }} </p>
               <hr>
-              <div v-for="field in JSON.parse(modalService.fields)">
+              <div v-for="field in modalService.fields">
               <div id="container" style="display:block; height:3rem;">
               <label style="display:inline;float:left"> {{ field.label }} </label> <input v-model="field.value" style="display:inline;float:right" type="input" :placeholder="field.placeholder" :name="field.name">
             </div>
@@ -79,8 +79,10 @@ export default {
       string+="Pick a group ID:"
       var groupID = prompt(string)
       addToGroup({"group_id":groupID, "service_id":service.ID})
+      location.reload()
     },
     populateModal(service){
+      service.fields=JSON.parse(service.fields);
       this.modalService = service;
       this.showModal=true;
     },
