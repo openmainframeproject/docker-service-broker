@@ -1,10 +1,14 @@
 <template>
-  <div>
-  <modal></modal>
-  <app-nav></app-nav>
-  <activeServices></activeServices>
-  <services></services>
-</div>
+	<div>
+		<app-nav></app-nav>
+		<modal></modal>
+              <activeServices></activeServices>
+		      <services></services>
+          <groups></groups>
+
+
+
+	</div>
 </template>
 
 <script>
@@ -12,12 +16,14 @@ import { isAuthed } from '../../utils/apiInterface';
 import AppNav from './AppNav';
 import Services from './Services';
 import activeServices from './ActiveServices';
+import groups from './Groups';
 export default {
   name: 'homepage',
   components: {
     AppNav,
     Services,
     activeServices,
+    groups,
   },
   data(){
   },

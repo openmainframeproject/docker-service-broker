@@ -60,6 +60,47 @@ app.get("/getServices",function(req,res)
     });
 });
 
+
+app.get("/getGroups",function(req,res)
+{
+    con.query("SELECT * FROM groups", function (err, groups, fields1)
+    {
+            groupIDs = []
+            for (i =0;i<groups.length;i++){
+                groupIDs.push(groups[i].ID)
+            }
+            groupIDs=groupIDs.join(",")
+            con.query("select * from groups_services where group_id in (?)",[groupIDs], function (err, groups_services, fields2){
+                con.query("SELECT * FROM services", function (err, services, fields2)
+                {
+                    retGroups = []
+                    for (i =0;i<groups.length;i++){
+                        group = groups[i]
+                        group.services = [];
+                        servicesList = [];
+                        for (j=0;j<groups_services.length;j++){
+                            g = groups_services[j]
+                            if (g.group_id == group.ID){
+                                servicesList.push(g.service_id);
+                            }
+                        };
+                        for (y=0;y<services.length;y++){
+                            service=services[y];
+                            console.log(service.ID);
+                            if (servicesList.indexOf(service.ID) != -1){
+                                group.services.push(service);
+                            }
+                        }
+                        retGroups.push(group);
+                    }
+                    res.send(retGroups);
+                });
+            });
+            
+    });
+});
+
+
 app.get("/getQueuedServices",function(req,res)
 {
     con.query("SELECT * FROM active_services where status='initializing'", function (err, result, fields)

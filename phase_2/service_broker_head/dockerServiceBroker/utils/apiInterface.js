@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const baseUrl = "http://localhost:3000";
 
-export {isAuthed, getServices, getActiveServices, startService, stopService, switchDatabase, stopSwarm, startSwarm};
+export {isAuthed, getServices, getActiveServices, getGroups, startService, stopService, switchDatabase, stopSwarm, startSwarm};
 
 function getCookie(cookiename) 
   {
@@ -18,6 +18,7 @@ function getServices(){
 	})
 }
 
+
 function getActiveServices(){
 	return axios.get(baseUrl+'/getActiveServices', {
 	    params: {
@@ -25,6 +26,16 @@ function getActiveServices(){
 	    }
 	})
 }
+
+function getGroups(){
+	return axios.get(baseUrl+'/getGroups', {
+	    params: {
+	      authString: getCookie("auth")
+	    }
+	})
+}
+
+
 function startService(service){
 	service.auth = getCookie("auth")
 	service.fields=JSON.parse(service.fields)
@@ -32,6 +43,9 @@ function startService(service){
 	return axios.post(baseUrl+'/startService', 
 	    service);
 	
+}
+
+function startGroup(group){
 }
 
 function stopService(service){
