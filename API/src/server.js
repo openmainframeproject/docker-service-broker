@@ -221,6 +221,7 @@ app.post("/deleteGroup",function(req,res)
 app.post("/endService", function(req,res)
 {
     console.log(req.body);
+    var id = req.body.ID,
     var name = req.body.name;
 
     con.query("delete from active_services where name = ?;",
@@ -228,6 +229,19 @@ app.post("/endService", function(req,res)
         function (err, result, fields)
     {
         res.send(result);
+    });
+
+    const { exec } = require('child_process');
+    //name + ID to make unique identifier which is still readable
+    exec('docker service rm ' + name + id, (error, stdout, stderr) =>
+    {
+        if (error)
+        {
+            console.error(`exec error: ${error}`);
+            return;
+        }
+        console.log(`stdout: ${stdout}`);
+        console.log(`stderr: ${stderr}`);
     });
 });
 
