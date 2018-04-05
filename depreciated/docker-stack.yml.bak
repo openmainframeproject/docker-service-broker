@@ -1,0 +1,98 @@
+version: "3"
+services:
+  administrator_panel:
+    image: sinenomine/nginx-s390x
+    deploy:
+      placement:
+        constraints: [node.role == worker]
+      replicas: 5
+      restart_policy:
+        condition: on-failure
+#      resources:
+#        limits:
+#          cpus: "0.1"
+#          memory: 100M
+    ports:
+      - "9999:8000"
+    volumes:
+      - "/data/docker-service-broker/administrator_panel/vue-app/dist:/usr/share/nginx/html"
+      - "/data/docker-service-broker/administrator_panel/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
+    networks:
+        - webnet
+
+
+  service_broker_head:
+    image: sinenomine/nginx-s390x
+    deploy:
+      placement:
+        constraints: [node.role == worker]
+      replicas: 5
+      restart_policy:
+        condition: on-failure
+#      resources:
+#        limits:
+#          cpus: "0.1"
+#          memory: 100M
+    ports:
+      - "80:8000"
+    volumes:
+      - "/data/docker-service-broker/service_broker_head/dockerServiceBroker/dist:/usr/share/nginx/html"
+      - "/data/docker-service-broker/service_broker_head/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
+      - "/data/docker-service-broker/service_broker_head/logs:/var/log/nginx"
+    networks:
+        - webnet
+
+  #API
+
+  API:
+    image: api
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "3000:3000"
+    
+    volumes:
+      - "/usr/bin/docker:/usr/bin/docker"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+        - webnet
+
+  mysqldb:
+    image: sinenomine/mariadb-s390x
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_DATABASE=services
+      - MYSQL_USER=test_user
+      - MYSQL_PASSWORD=test_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - "/data/mysql:/var/lib/mysql"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+    networks:
+      - webnet
+
+  visualizer:
+    image: sinenomine/visualizer-s390x
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - webnet
+networks:
+  webnet:
+    driver: overlay
