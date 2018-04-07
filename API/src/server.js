@@ -222,7 +222,7 @@ app.post("/endService", function(req,res)
 {
     console.log(req.body);
     var id = req.body.ID,
-    var name = req.body.name;
+        name = req.body.name;
 
     con.query("delete from active_services where name = ?;",
         [name],
