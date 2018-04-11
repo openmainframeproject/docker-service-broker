@@ -40,7 +40,7 @@ app.get("/isAuthed",function(req,res)
     con.query("SELECT * from users where username=? and password=?", [username, password], function(err, results, fields){
         authObj=Object();
         authObj.auth=false;
-        if (results.length===1)
+        if (results && results.length===1)
         {
             authObj.auth=true;
             res.send(authObj);
@@ -61,7 +61,7 @@ app.get("/isAdmin",function(req,res)
     con.query("SELECT * from users where username=? and password=? and admin=true", [username, password], function(err, results, fields){
         authObj=Object();
         authObj.auth=false;
-        if (results.length===1)
+        if (results && results.length===1)
         {
             authObj.auth=true;
             res.send(authObj);
