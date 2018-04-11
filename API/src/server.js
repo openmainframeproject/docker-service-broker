@@ -274,7 +274,7 @@ app.post("/deleteGroup",function(req,res)
     });
 });
 
-app.post("/stopService", function(req,res)
+app.post("/endService", function(req,res)
 {
     console.log(req.body);
     var id = req.body.ID,
