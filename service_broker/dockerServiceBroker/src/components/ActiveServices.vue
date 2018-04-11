@@ -9,8 +9,10 @@
         <div class="panel-body">
           <p><span class="badge alert-info"> Description: </span> {{ modalService.description }} </p>
           <hr>
-          <div v-for="field in modalService.fields">
-          <label style="display:inline;float:left"> {{ modalService.fields[0].label }} </label> <input v-model="modalService.fields[0].value" style="display:inline;float:right" type="input" disabled :placeholder="modalService.fields[0].placeholder" :name="modalService.fields[0].name">
+          <div v-for="field in displayFields">
+          <div style="display:block; height:3rem;">
+          <label style="display:inline;float:left"> {{ field.label}} </label> <input :value="field.value" style="display:inline;float:right" type="input" disabled :placeholder="field.placeholder" :name="field.name">
+          </div>
         </div>
       </div>
     </div>
@@ -68,6 +70,7 @@ export default {
     return {
       showModal: false,
       services: [],
+      displayFields:{},
       search: '',
       modalService: {},
     };
@@ -92,6 +95,8 @@ export default {
 
     details(service){
       this.modalService = service;
+      console.log (JSON.parse(service.fields));
+      this.displayFields = JSON.parse(service.fields);
       this.showModal=true;
     },
     closeModal(){

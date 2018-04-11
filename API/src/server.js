@@ -52,9 +52,38 @@ app.get("/isAuthed",function(req,res)
     });
 });
 
+app.get("/isAdmin",function(req,res)
+{
+    authData = req.query.auth;
+    data = Buffer.from(authData, 'base64').toString().split(":");
+    username = data[0];
+    password = data[1];
+    con.query("SELECT * from users where username=? and password=? and admin=true", [username, password], function(err, results, fields){
+        authObj=Object();
+        authObj.auth=false;
+        if (results.length===1)
+        {
+            authObj.auth=true;
+            res.send(authObj);
+        }
+        else
+        {
+        res.send(authObj);
+        }
+    });
+});
+
 app.get("/getServices",function(req,res)
 {
     con.query("SELECT * FROM services", function (err, result, fields)
+    {
+        res.send(result);
+    });
+});
+
+app.get("/getUsers",function(req,res)
+{
+    con.query("SELECT * FROM users", function (err, result, fields)
     {
         res.send(result);
     });
@@ -179,9 +208,27 @@ app.post("/startService",function(req,res)
     }
 });
 
+
+app.post("/removeService",function(req,res)
+{
+    con.query("delete from services where ID=?",[req.body.ID], function (err, result, fields)
+    {
+        res.send(result);
+    });
+});
+
+
 app.post("/addGroup",function(req,res)
 {
     con.query("insert into groups (name, description) values (?,?)",[req.body.name, req.body.description], function (err, result, fields)
+    {
+        res.send(result);
+    });
+});
+
+app.post("/addUser",function(req,res)
+{
+    con.query("insert into users (username, password, admin) values (?,?,?)",[req.body.username, req.body.password, req.body.admin], function (err, result, fields)
     {
         res.send(result);
     });
@@ -195,6 +242,15 @@ app.post("/addToGroup",function(req,res)
     });
 });
 
+
+app.post("/removeUser",function(req,res)
+{
+    console.log("got here!!");
+    con.query("delete from users where username=?",[req.body.username], function (err, result, fields)
+    {
+        res.send(result);
+    });
+});
 
 app.post("/removeFromGroup",function(req,res)
 {
@@ -224,8 +280,8 @@ app.post("/endService", function(req,res)
     var id = req.body.ID,
         name = req.body.name;
 
-    con.query("delete from active_services where name = ?;",
-        [name],
+    con.query("delete from active_services where ID = ?;",
+        [id],
         function (err, result, fields)
     {
         res.send(result);

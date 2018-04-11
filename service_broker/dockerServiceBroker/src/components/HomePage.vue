@@ -2,9 +2,13 @@
 	<div>
 		<app-nav></app-nav>
 		<modal></modal>
-              <activeServices></activeServices>
-		      <services></services>
-          <groups></groups>
+    <div style="overflow:hidden">
+    <activeServices></activeServices>
+    </div><div style="overflow:hidden">
+		<services></services>
+    </div><div style="overflow:hidden">
+    <groups></groups>
+    </div>
 
 
 

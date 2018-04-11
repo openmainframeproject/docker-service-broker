@@ -6,6 +6,7 @@
     <ul class="nav navbar-nav navbar-right">
       <li>
         <span id="dynamicButtons"></span>
+        <button class="btn btn-danger log" v-show="isLogged" @click="admin()">Admin</button>
         <button class="btn btn-danger log" v-show="isLogged" @click="dashboard()">Dashboard</button>
         <button class="btn btn-danger log" v-show="isLogged" @click="handleLogout()">Log out</button>
         <button class="btn btn-info log" v-show="!isLogged" @click="handleLogin()">Log In</button>
@@ -34,6 +35,9 @@ export default {
     },
     dashboard(){
       window.location.href="/dashboard";
+    },
+    admin(){
+      window.location.href="/admin";
     },
     isLoggedIn() {
       const thisClass = this;

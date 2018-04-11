@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-const baseUrl = "http://148.100.98.185:3000";
+// const baseUrl = "http://148.100.108.170:3000";
+const baseUrl = "http://localhost:3000";
 
-export {isAuthed, getServices, removeFromGroup, startGroup, addToGroup, addGroup, deleteGroup, addService, getActiveServices, getGroups, startService, stopService, switchDatabase, stopSwarm, startSwarm};
+export {isAdmin, isAuthed, getUsers, removeUser, addUser, getServices, removeService, removeFromGroup, startGroup, addToGroup, addGroup, deleteGroup, addService, getActiveServices, getGroups, startService, stopService, switchDatabase, stopSwarm, startSwarm};
 
 function getCookie(cookiename) 
   {
@@ -43,7 +44,7 @@ function addGroup(group){
 }
 
 function startGroup(group){
-	data.auth = getCookie("auth")
+	group.auth = getCookie("auth")
 	alert("Group Launched!");
 	return axios.post(baseUrl+'/startGroup', 
 	    group);
@@ -55,6 +56,35 @@ function addService(service){
 	alert("Service Added!");
 	return axios.post(baseUrl+'/addService', 
 	    service);
+}
+
+function removeService(service){
+	service.auth = getCookie("auth")
+	alert("Service removed!");
+	return axios.post(baseUrl+'/removeService', 
+	    service);
+}
+
+function getUsers(){
+	return axios.get(baseUrl+'/getUsers', {
+	    params: {
+	      authString: getCookie("auth")
+	    }
+	})
+}
+
+function addUser(user){
+	user.auth = getCookie("auth")
+	alert("User Added!");
+	return axios.post(baseUrl+'/addUser', 
+	    user);
+}
+
+function removeUser(user){
+	user.auth = getCookie("auth")
+	alert("User removed!");
+	return axios.post(baseUrl+'/removeUser', 
+	    user);
 }
 
 function addToGroup(data){
@@ -88,17 +118,21 @@ function startService(service){
 	
 }
 
-
-
 function stopService(service){
 	service.auth = getCookie("auth")
 	service.fields=JSON.parse(service.fields);
 	alert("Your service is currently terminating.");
-	return axios.post(baseUrl+'/stopService', 
+	return axios.post(baseUrl+'/endService', 
 	    service);
 }
 
-
+function isAdmin(){
+	return axios.get(baseUrl+'/isAdmin', {
+	    params: {
+	      auth: getCookie("auth")
+	    }
+	})
+}
 
 function isAuthed(){
 	return axios.get(baseUrl+'/isAuthed', {

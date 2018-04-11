@@ -38,8 +38,9 @@
           <p><span class="badge alert-info"> Description: </span> {{ service.description }} </p>
           <p><span class="badge alert-info"> Version: </span> {{ service.version }} </p>
           <hr>
-          <p><button style="float:left" @click="populateModal(service)" class="btn btn-info log">Launch Service</button></p>
+          <p><button style="width:100%;" @click="populateModal(service)" class="btn btn-info log">Launch Service</button></p>
           <p><button style="float:right;" @click="addGroup(service)" class="btn btn-info log">Add to Group</button></p>
+          <p><button style="float:left" @click="deleteService(service)" class="btn btn-info log">Delete Service</button></p>
         </div>
       </div>
     </div>
@@ -47,7 +48,7 @@
 </template>
 
 <script>
-import { addToGroup, getGroups, getServices, startService } from '../../utils/apiInterface';
+import { removeService, addToGroup, getGroups, getServices, startService } from '../../utils/apiInterface';
 import Modal from './Modal';
 export default {
   name: 'services',
@@ -71,15 +72,35 @@ export default {
       this.showModal=false;
     },
     addGroup(service){
-      var string=""
+      var string="Groups:\n"
       for (var i=0;i<this.groups.length;i++){
         var group = this.groups[i];
-        string+=group.ID+" - "+group.name+"\n"
+        string+=group.name+"\n"
       }
-      string+="Pick a group ID:"
-      var groupID = prompt(string)
+      string+="-----\n"
+      string+="Pick a group:"
+      var groupName = prompt(string)
+      var groupID=-1
+      for (var i=0;i<this.groups.length;i++){
+        if (groupName===this.groups[i].name){
+          groupID=this.groups[i].ID
+        }
+      }
+      if (groupID!=-1){
       addToGroup({"group_id":groupID, "service_id":service.ID})
       location.reload()
+      }else{
+        alert("No such group.")
+      }
+    },
+    deleteService(service){
+      if (confirm("Are you sure you want to delete this service?")){
+        removeService(service);
+        location.reload();
+      }else{
+        return;
+      }
+
     },
     populateModal(service){
       service.fields=JSON.parse(service.fields);
