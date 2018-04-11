@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const baseUrl = "http://148.100.108.170:3000";
-const baseUrl = "http://localhost:3000";
+ const baseUrl = "http://148.100.108.170:3000";
+//const baseUrl = "http://localhost:3000";
 
 export {isAdmin, isAuthed, getUsers, removeUser, addUser, getServices, removeService, removeFromGroup, startGroup, addToGroup, addGroup, deleteGroup, addService, getActiveServices, getGroups, startService, stopService, switchDatabase, stopSwarm, startSwarm};
 
