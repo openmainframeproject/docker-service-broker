@@ -135,13 +135,13 @@ app.get("/getQueuedServices",function(req,res)
 
 app.get("/claim",function(req,res)
 {
-    id = req.query.id
+    //id = req.query.id
     workerid=req.query.workerid
-    con.query("SELECT * FROM active_services where ID=? AND NOT status<=>'claimed'",[id], function (err, result, fields)
+    con.query("SELECT * FROM active_services where NOT status='claimed'", function (err, result, fields)
     {
 	console.log(result);
         if (result.length>0){
-            con.query("update active_services set status='claimed', workerID=? where id=?",[workerid, id], function (err, result, fields)
+            con.query("update active_services set status='claimed'", function (err, result, fields)
             {
                 console.log("claimed");
                 res.send(result);
@@ -171,7 +171,7 @@ app.post("/startService",function(req,res)
             description = req.body.description,
             version = req.body.version,
             fields = JSON.stringify(req.body.fields);
-    con.query("insert into active_services(name, description, version, fields) values (?, ?, ?, ?);",
+    con.query("insert into active_services(name, description, version, fields, status) values (?, ?, ?, ?, 'initializing');",
         [name, description, version, fields],
         function (err, result, fields)
     {
