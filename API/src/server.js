@@ -186,26 +186,8 @@ app.post("/startService",function(req,res)
         console.log(result);
         console.log(err);
         var id = result[0].ID;
-        startService(id);
     });
 
-    function startService(ID)
-    {
-        //var id = value;
-
-        const { exec } = require('child_process');
-        //name + ID to make unique identifier which is still readable
-        exec('docker service create --name ' + name + ID + ' ' + name, (error, stdout, stderr) =>
-        {
-            if (error)
-            {
-                console.error(`exec error: ${error}`);
-                return;
-            }
-            console.log(`stdout: ${stdout}`);
-            console.log(`stderr: ${stderr}`);
-        });
-    }
 });
 
 
@@ -300,5 +282,13 @@ app.post("/endService", function(req,res)
         console.log(`stderr: ${stderr}`);
     });
 });
+
+app.post("/runningStatus"), function(req,res)
+{
+    con.query("update services set status = 'running' where ID=?",[req.body.ID], function (err, result, fields)
+     {
+         res.send(result);
+     });
+}
 
 app.listen(3000);
