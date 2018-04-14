@@ -9,20 +9,28 @@ while True:
     time.sleep(1)
     #TODO: add handling for capacityAvailable with regards to docker swarm
     #capacityAvailable = True
-    r = requests.get(baseUrl+'/getQueuedServices')
-    result = json.dumps(r.json()[0])
-    jsonData = json.loads(result)
-    fields = jsonData['fields']
-    #for i in jsonData:
-    name = jsonData['name']
-    #check if in services
-    r2 = requests.get(baseUrl+'/getServices')
-    for i in r2.json():
+    try:
+      r = requests.get(baseUrl+'/getQueuedServices')
+      result = json.dumps(r.json()[0])
+      jsonData = json.loads(result)
+      fields = jsonData['fields']
+      ID = jsonData['ID']
+      #for i in jsonData:
+      name = jsonData['name']
+      #check if in services
+      r2 = requests.get(baseUrl+'/getServices')
+    
+      for i in r2.json():
         #print(i)
         jsonData = i
         #for i in jsonData:
         if jsonData['name'] == name:
-            print('docker service create ' + jsonData['parameters'] + ' ' + '--name ' + name + str(jsonData['ID']) + ' ' + jsonData['image'])
-            os.system('docker service create ' + jsonData['parameters'] + ' ' + '--name ' + name + str(jsonData['ID']) + ' ' + jsonData['image'])
-            id = "'" + str(jsonData['ID']) + "'"
-            req = requests.post(baseUrl+'/runningStatus', data={'ID' : id})
+            print('docker service create ' + jsonData['parameters'] + ' ' + '--name ' + name + str(ID) + ' ' + jsonData['image'])
+            os.system('docker service create ' + jsonData['parameters'] + ' ' + '--name ' + name + str(ID) + ' ' + jsonData['image'])
+
+            Data = {'ID' : ID}
+            req = requests.post(baseUrl+'/runningStatus', json=Data)
+
+            print(req.text)
+    except:
+      print("no queued services")

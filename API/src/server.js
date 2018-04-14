@@ -283,12 +283,15 @@ app.post("/endService", function(req,res)
     });
 });
 
-app.post("/runningStatus"), function(req,res)
+app.post("/runningStatus", function(req,res)
 {
-    con.query("update services set status = 'running' where ID=?",[req.body.ID], function (err, result, fields)
+    console.log(req.body)
+    console.log(req.body.ID)
+    con.query("update active_services set status = 'running' where ID=?",[req.body.ID], function (err, result, fields)
      {
-         res.send(result);
+        console.log("runningStatus query")
+        res.send(result);
      });
-}
+});
 
 app.listen(3000);
