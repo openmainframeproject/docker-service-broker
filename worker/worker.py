@@ -15,18 +15,31 @@ while True:
       jsonData = json.loads(result)
       fields = jsonData['fields']
       ID = jsonData['ID']
+      fields = jsonData['fields']
       #for i in jsonData:
       name = jsonData['name']
       #check if in services
       r2 = requests.get(baseUrl+'/getServices')
     
+      
+      for i in json.loads(fields):
+        #print(i)
+        if i['label'] == 'Port':
+          port = i['value']
+        else:
+          port = -1
       for i in r2.json():
         #print(i)
         jsonData = i
         #for i in jsonData:
         if jsonData['name'] == name:
-            print('docker service create ' + jsonData['parameters'] + ' ' + '--name ' + name + str(ID) + ' ' + jsonData['image'])
-            os.system('docker service create ' + jsonData['parameters'] + ' ' + '--name ' + name + str(ID) + ' ' + jsonData['image'])
+            if port != -1:
+              servicePort = jsonData['port']
+              print('docker service create ' + jsonData['parameters'] + ' -p ' + port + ":" + service_port + ' --name ' + name + str(ID) + ' ' + jsonData['image'])
+              os.system('docker service create ' + jsonData['parameters'] + ' -p ' + port + ":" + service_port + ' --name ' + name + str(ID) + ' ' + jsonData['image'])
+            else:
+              print('docker service create ' + jsonData['parameters'] + ' --name ' + name + str(ID) + ' ' + jsonData['image'])
+              os.system('docker service create ' + jsonData['parameters'] + ' --name ' + name + str(ID) + ' ' + jsonData['image'])
 
             Data = {'ID' : ID}
             req = requests.post(baseUrl+'/runningStatus', json=Data)
