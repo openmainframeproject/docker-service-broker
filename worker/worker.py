@@ -33,17 +33,17 @@ while True:
         jsonData = i
         #for i in jsonData:
         if jsonData['name'] == name:
-            if port != -1:
-              servicePort = jsonData['port']
-              print('docker service create ' + jsonData['parameters'] + ' -p ' + port + ":" + service_port + ' --name ' + name + str(ID) + ' ' + jsonData['image'])
-              os.system('docker service create ' + jsonData['parameters'] + ' -p ' + port + ":" + service_port + ' --name ' + name + str(ID) + ' ' + jsonData['image'])
-            else:
-              print('docker service create ' + jsonData['parameters'] + ' --name ' + name + str(ID) + ' ' + jsonData['image'])
-              os.system('docker service create ' + jsonData['parameters'] + ' --name ' + name + str(ID) + ' ' + jsonData['image'])
+          if port != -1:
+            servicePort = jsonData['port']
+            print('docker service create ' + jsonData['parameters'] + ' -p ' + str(port) + ":" + str(servicePort) + ' --name ' + name + str(ID) + ' ' + jsonData['image'])
+            os.system('docker service create ' + jsonData['parameters'] + ' -p ' + str(port) + ":" + str(servicePort) + ' --name ' + name + str(ID) + ' ' + jsonData['image'])
+          else:
+            print('docker service create ' + jsonData['parameters'] + ' --name ' + name + str(ID) + ' ' + jsonData['image'])
+            os.system('docker service create ' + jsonData['parameters'] + ' --name ' + name + str(ID) + ' ' + jsonData['image'])
 
-            Data = {'ID' : ID}
-            req = requests.post(baseUrl+'/runningStatus', json=Data)
+          Data = {'ID' : ID}
+          req = requests.post(baseUrl+'/runningStatus', json=Data)
 
-            print(req.text)
+          print(req.text)
     except:
       print("no queued services")

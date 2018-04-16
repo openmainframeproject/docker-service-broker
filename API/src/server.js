@@ -1,5 +1,5 @@
 //needs refactoring
-
+var request = require('request');
 var express = require("express");
 var mysql = require("mysql");
 var bodyParser = require("body-parser");
@@ -166,6 +166,7 @@ app.use( bodyParser.json() );
 
 app.post("/startService",function(req,res)
 {
+    console.log("start service");
     console.log(req.body);
     var name = req.body.name,
             description = req.body.description,
@@ -179,15 +180,6 @@ app.post("/startService",function(req,res)
         console.log(err);
         res.send(result);
     });
-
-    var id = con.query("SELECT ID FROM active_services ORDER BY id DESC LIMIT 1;",
-        function (err, result, fields)
-    {
-        console.log(result);
-        console.log(err);
-        var id = result[0].ID;
-    });
-
 });
 
 
@@ -288,10 +280,57 @@ app.post("/runningStatus", function(req,res)
     console.log(req.body)
     console.log(req.body.ID)
     con.query("update active_services set status = 'running' where ID=?",[req.body.ID], function (err, result, fields)
-     {
-        console.log("runningStatus query")
-        res.send(result);
-     });
+    {
+      console.log("runningStatus query")
+      res.send(result);
+    });
+});
+
+app.post("/startGroup", function(req,res)
+{
+    //console.log(req.body);
+    //console.log("----------------------------------------");
+    //console.log(req.body.services);
+    //var len = req.body.services;
+    //console.log("----------------------------------------");
+    //console.log(req.body['services']);
+
+    var jsonData=req.body['services'];
+    //console.log(jsonData);
+    console.log("----------------------------------------");
+    for(var service in jsonData)
+    {
+      var output = jsonData[service];
+      console.log(output);
+      console.log("----------------------------------------");
+      request
+      ({
+        url: "http://148.100.98.185:3000/startService",
+        method: "POST",
+        json:output,
+        function(err, result, fields)
+        {
+          res.send(result);
+        }
+      });
+    }
+
+
+//      console.log("SERVICE                               SERVICE")
+//      var options =
+//      {
+//        host: '148.100.98.185',
+//        path: '/startService',
+//        port: '3000',
+//        method: 'POST',
+//        body: service
+//      };
+//
+//      var req = http.request(options, function (error, response)
+//      {
+//        res.send(req);
+//      });
+//    }
 });
 
 app.listen(3000);
