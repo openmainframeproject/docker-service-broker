@@ -172,6 +172,8 @@ app.post("/startService",function(req,res)
             description = req.body.description,
             version = req.body.version,
             fields = JSON.stringify(req.body.fields);
+    fields = fields.replace(/\\/g, '');
+    fields = fields.substring(1,fields.length-1);
     con.query("insert into active_services(name, description, version, fields, status) values (?, ?, ?, ?, 'initializing');",
         [name, description, version, fields],
         function (err, result, fields)
@@ -300,14 +302,14 @@ app.post("/startGroup", function(req,res)
     console.log("----------------------------------------");
     for(var service in jsonData)
     {
-      var output = jsonData[service];
-      console.log(output);
+      var output = service;
+      console.log(jsonData[service]);
       console.log("----------------------------------------");
       request
       ({
         url: "http://148.100.98.185:3000/startService",
         method: "POST",
-        json:output,
+        json:jsonData[service],
         function(err, result, fields)
         {
           res.send(result);

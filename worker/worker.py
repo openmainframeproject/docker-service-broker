@@ -21,13 +21,20 @@ while True:
       #check if in services
       r2 = requests.get(baseUrl+'/getServices')
     
-      
-      for i in json.loads(fields):
-        #print(i)
-        if i['label'] == 'Port':
-          port = i['value']
+      try:
+        for i in json.loads(fields):
+          #print(i)
+          if i['label'] == 'Port':
+            port = i['value']
+          else:
+            port = -1
+      except:
+        print(json.loads(fields))
+        if json.loads(fields)['label'] == 'Port':
+          port = json.loads(fields)['value']
         else:
           port = -1
+
       for i in r2.json():
         #print(i)
         jsonData = i
