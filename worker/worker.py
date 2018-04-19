@@ -29,10 +29,14 @@ while True:
           else:
             port = -1
       except:
-        print(json.loads(fields))
-        if json.loads(fields)['label'] == 'Port':
-          port = json.loads(fields)['value']
-        else:
+        try:
+          print(json.loads(fields))
+          if json.loads(fields)['label'] == 'Port':
+            port = json.loads(fields)['value']
+          else:
+            port = -1
+        except:
+          print("no fields")
           port = -1
 
       for i in r2.json():

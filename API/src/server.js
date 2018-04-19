@@ -172,8 +172,15 @@ app.post("/startService",function(req,res)
             description = req.body.description,
             version = req.body.version,
             fields = JSON.stringify(req.body.fields);
-    fields = fields.replace(/\\/g, '');
-    fields = fields.substring(1,fields.length-1);
+    if(fields != "null")
+    {
+        fields = fields.replace(/\\/g, '');
+        fields = fields.substring(1,fields.length-1);
+    }
+    else
+    {
+        fields = JSON.parse(fields);
+    }
     con.query("insert into active_services(name, description, version, fields, status) values (?, ?, ?, ?, 'initializing');",
         [name, description, version, fields],
         function (err, result, fields)
@@ -296,6 +303,9 @@ app.post("/startGroup", function(req,res)
     //var len = req.body.services;
     //console.log("----------------------------------------");
     //console.log(req.body['services']);
+    console.log(req.body);
+    console.log(" ");
+    console.log(" ");
 
     var jsonData=req.body['services'];
     //console.log(jsonData);
