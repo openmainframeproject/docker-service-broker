@@ -104,7 +104,12 @@ export default {
 
     },
     populateModal(service){
-      service.fields=JSON.parse(service.fields);
+      var res = JSON.parse(service.fields);
+      if (Object.prototype.toString.call(res) === "[object Object]"){
+        service.fields=[res];        
+      }else{
+        service.fields=res;
+      }
       this.modalService = service;
       this.showModal=true;
     },

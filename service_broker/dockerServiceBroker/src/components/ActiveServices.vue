@@ -1,6 +1,6 @@
 <template>
   <div style="width:100%;display:inline-block">
-  	<modal v-if="showModal"> 
+<modal v-if="showModal"> 
   <div slot="body">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -92,11 +92,16 @@ export default {
     	}
 
     },
-
     details(service){
       this.modalService = service;
-      console.log (JSON.parse(service.fields));
-      this.displayFields = JSON.parse(service.fields);
+      var res = JSON.parse(service.fields);
+      if (Object.prototype.toString.call(res) === '[object Object]'){
+        this.displayFields = [res];
+      }else if( Object.prototype.toString.call(res) === '[object Array]'){
+        this.displayFields = res;
+      }else{
+        this.displayFields = null;
+      }
       this.showModal=true;
     },
     closeModal(){
