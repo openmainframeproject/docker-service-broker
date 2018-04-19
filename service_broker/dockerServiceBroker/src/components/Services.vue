@@ -88,7 +88,8 @@ export default {
       }
       if (groupID!=-1){
       addToGroup({"group_id":groupID, "service_id":service.ID})
-      location.reload()
+      alert("Added!");
+      setTimeout(location.reload.bind(location), 1000);
       }else{
         alert("No such group.")
       }
@@ -96,7 +97,7 @@ export default {
     deleteService(service){
       if (confirm("Are you sure you want to delete this service?")){
         removeService(service);
-        location.reload();
+        setTimeout(location.reload.bind(location), 1000);
       }else{
         return;
       }
@@ -111,7 +112,7 @@ export default {
       startService(this.modalService);
       this.showModal=false;
       this.modalService='';
-      location.reload();
+      setTimeout(location.reload.bind(location), 1000);;
     },
     getServ() {
       const thisClass = this;

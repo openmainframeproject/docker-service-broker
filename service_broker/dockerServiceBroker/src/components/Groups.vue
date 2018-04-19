@@ -1,15 +1,15 @@
 <template>
   <div>
-     <modal v-if="showModal"> 
-      <div slot="body">
+    <modal v-if="showModal"> <!-- Services Modal -->
+      <div slot="body" v-for="service in modalGroup.services">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title"> {{ modalGroup.name }} </h3>
+              <h3 class="panel-title"> {{ service.name }} </h3>
             </div>
             <div class="panel-body">
-              <p><span class="badge alert-info"> Description: </span> {{ modalGroup.description }} </p>
+              <p><span class="badge alert-info"> Description: </span> {{ service.description }} </p>
               <hr>
-              <div v-for="field in JSON.parse(modalGroup.fields)">
+              <div v-for="field in service.fields">
               <div id="container" style="display:block; height:3rem;">
               <label style="display:inline;float:left"> {{ field.label }} </label> <input v-model="field.value" style="display:inline;float:right" type="input" :placeholder="field.placeholder" :name="field.name">
             </div>
@@ -55,7 +55,7 @@
         </span>
         </div>
           <hr>
-          <p><button style="float:left" @click="launchGroup(group)" class="btn btn-info log">Launch Group</button></p>
+          <p><button style="float:left" @click="populateModal(group)" class="btn btn-info log">Launch Group</button></p>
           <p><button style="float:right;" v-show="isAdmin" @click="delGroup(group)" class="btn btn-info log">Delete Group</button></p>
         </div>
       </div>
@@ -74,6 +74,9 @@ export default {
       groups: [],
       search: '',
       modalGroup: '',
+      iterCounter: 0,
+      modalService: '',
+      isDone:true,
       isAdmin:false
     };
   },
@@ -81,9 +84,6 @@ export default {
     Modal
   },
   methods: {
-    // isLoggedIn() {
-    //   return isLoggedIn();
-    // },
     closeModal(){
       this.showModal=false;
     },
@@ -91,26 +91,26 @@ export default {
       this.isAdmin=document.location.href.indexOf("admin")>0
     },
     populateModal(group){
-      this.modalGroup = group;
+      for (var i=0;i<group.services.length;i++){
+        group.services[i].fields=JSON.parse(group.services[i].fields);
+      }
+      this.modalGroup=group;
       this.showModal=true;
     },
     submitAndClose(){
       startGroup(this.modalGroup);
-      this.showModal=false;
+      this.showGroupModal=false;
       this.modalGroup='';
-      location.reload();
+      // setTimeout(location.reload.bind(location), 500);;
     },
     delGroup(group){
       deleteGroup(group);
-      location.reload();
-    },
-    launchGroup(group){
-      startGroup(group);
-      // location.reload();
+      setTimeout(location.reload.bind(location), 500);;
     },
      removeFromG(service,group){
       removeFromGroup({"group_id":group.ID, "service_id":service.ID});
-      location.reload();
+      alert("Removed!");
+      setTimeout(location.reload.bind(location), 500);;
     },
     getGroup() {
       const thisClass = this;

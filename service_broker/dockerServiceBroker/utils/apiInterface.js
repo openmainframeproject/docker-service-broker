@@ -89,14 +89,12 @@ function removeUser(user){
 
 function addToGroup(data){
 	data.auth = getCookie("auth")
-	alert("Added!");
 	return axios.post(baseUrl+'/addToGroup', 
 	    data);
 }
 
 function removeFromGroup(data){
 	data.auth = getCookie("auth")
-	alert("Removed!");
 	return axios.post(baseUrl+'/removeFromGroup', 
 	    data);
 }
