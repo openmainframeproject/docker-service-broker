@@ -9,7 +9,7 @@
         <div class="panel-body">
           <p><span class="badge alert-info"> Description: </span> {{ modalService.description }} </p>
           <hr>
-          <div v-for="field in displayFields">
+          <div v-for="field in modalService.fields">
           <div style="display:block; height:3rem;">
           <label style="display:inline;float:left"> {{ field.label}} </label> <input :value="field.value" style="display:inline;float:right" type="input" disabled :placeholder="field.placeholder" :name="field.name">
           </div>
@@ -47,7 +47,8 @@
           </div>
           <p><span class="badge alert-info"> Uptime: </span> {{ service.uptime }} </p>
           <p><span class="badge alert-info"> Version: </span> {{ service.version }} </p>
-          <div v-for="field in JSON.parse(service.fields)">
+          <div v-for="field in service.fields">
+		
               <div v-show="field.display" id="container" style="display:block; height:3rem;">
               <p><span class="badge alert-info">{{ field.label }} </span> {{ field.value }} </p>
               </div>
@@ -86,7 +87,7 @@ export default {
     sService(service){
     	if (confirm("Are you sure you want to stop the service?")){
     		stopService(service);
-        location.reload();
+        setTimeout(location.reload.bind(location), 1000);
     	}else{
     		return;
     	}
@@ -94,14 +95,7 @@ export default {
     },
     details(service){
       this.modalService = service;
-      var res = JSON.parse(service.fields);
-      if (Object.prototype.toString.call(res) === '[object Object]'){
-        this.displayFields = [res];
-      }else if( Object.prototype.toString.call(res) === '[object Array]'){
-        this.displayFields = res;
-      }else{
-        this.displayFields = null;
-      }
+      this.displayFields = service.fields;
       this.showModal=true;
     },
     closeModal(){
@@ -110,6 +104,18 @@ export default {
     getAServices() {
       const thisClass = this;
       function set(data){
+	     for (var i=0;i<data.data.length;i++){
+    		var res = JSON.parse(data.data[i].fields);
+          if (Object.prototype.toString.call(res) === '[object Object]'){
+            data.data[i].fieldsOld=data.data[i].fields;
+            data.data[i].fields = [res];
+          }else if( Object.prototype.toString.call(res) === '[object Array]'){
+            data.data[i].fieldsOld=data.data[i].fields;
+            data.data[i].fields = res;
+          }else{
+            data.data[i].fields = null;
+          }
+	       }
         thisClass.services = data.data;
         console.log(data.data);
       }
@@ -120,7 +126,12 @@ export default {
   computed: {
     filteredList() {
       return this.services.filter(serv => {
-        return (serv.name.toLowerCase()+" "+serv.description.toLowerCase()).includes(this.search.toLowerCase())
+        if (serv.fields!=null){
+          return (serv.name.toLowerCase()+" "+serv.description.toLowerCase()+" "+serv.fieldsOld).includes(this.search.toLowerCase())
+        }else{
+          return (serv.name.toLowerCase()+" "+serv.description.toLowerCase()).includes(this.search.toLowerCase())
+        }
+        
       })
     }
   },

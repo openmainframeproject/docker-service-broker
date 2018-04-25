@@ -48,9 +48,6 @@
               <label style="display:inline;float:left"> Version </label> <input v-model="modalService.version" style="display:inline;float:right" type="input" :placeholder="Version" :name="modalService.version">
             </div>
             <div id="container" style="display:block; height:3rem;">
-              <label style="display:inline;float:left"> Command </label> <input v-model="modalService.command" style="display:inline;float:right" type="input" :placeholder="command" :name="modalService.command">
-            </div>
-            <div id="container" style="display:block; height:3rem;">
               <label style="display:inline;float:left"> Docker Compose File </label>
                 <input style="float:right;" type="file" @change="processFile" accept="application/x-yaml">
             </div>
@@ -61,7 +58,7 @@
             <hr>
             <div>
             <div id="container" style="display:block; height:3rem;" v-for="field in modalService.fields">
-             <input v-model="field.label" style="display:inline;float:left" type="input" >
+             <input v-model="field.label" :disabled="field.label == 'port' || field.label == 'image' || field.label == 'Service Port'" style="display:inline;float:left" type="input" >
              <input v-model="field.display" type="checkbox" style="display:inline;float:right; margin-left:2rem;"> 
              <input v-model="field.value" style="display:inline;float:right" type="input" >
             </div>
@@ -132,7 +129,7 @@ export default {
     return {
       modalGroup:{"name":"", "description":""},
       modalUser:{"username":"", "password":"", "admin":false},
-      modalService:{"name":"", "description":"", "fields":[], "version":"", "command":"", "composeFile":""},
+      modalService:{"name":"", "description":"", "fields":[], "version":"", "image":"", "Service Port":"", "composeFile":""},
       showServiceModal:false,
       showUserModal:false,
       users:null,
@@ -142,16 +139,19 @@ export default {
   methods:{
     closeServiceModal(){
       this.showServiceModal=false;
-      this.modalService={"name":"", "description":"", "fields":[], "version":"", "command":""}
+      this.modalService={"name":"", "description":"", "fields":[], "version":"", "image":"", "Service Port":"", "composeFile":""}
     },
     populateServiceModal(){
+      this.modalService.fields.push({"label":"port", "value":"", "display":true})
+      this.modalService.fields.push({"label":"Service Port", "value":"", "display":false})
+      this.modalService.fields.push({"label":"image", "value":"", "display":false})
       this.showServiceModal=true;
     },
     submitAndCloseService(){
       addService(this.modalService);
       this.showServiceModal=false;
-      this.modalService={"name":"", "description":"", "fields":[], "version":"", "command":""};
-      location.reload();
+      this.modalService={"name":"", "description":"", "fields":[], "version":"", "image":"", "Service Port":"", "composeFile":""};
+      setTimeout(location.reload.bind(location), 1000);
     },
     closeUserModal(){
       this.showUserModal=false;
@@ -170,14 +170,14 @@ export default {
       var userName = prompt(string)
       if (userName){
         removeUser({"username":userName})
-        location.reload();
+        setTimeout(location.reload.bind(location), 1000);
       }
     },
     submitAndCloseUser(){
       addUser(this.modalUser);
       this.showUserModal=false;
       this.modalUser={"username":"", "password":"", "admin":false};
-      location.reload();
+      setTimeout(location.reload.bind(location), 1000);
     },
     closeGroupModal(){
       this.showGroupModal=false;
@@ -203,7 +203,7 @@ export default {
       addGroup(this.modalGroup);
       this.showGroupModal=false;
       this.modalGroup={"name":"", "description":""};
-      location.reload();
+      setTimeout(location.reload.bind(location), 1000);
     },
     getUs() {
       const thisClass = this;

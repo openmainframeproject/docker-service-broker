@@ -118,7 +118,7 @@ function startService(service){
 
 function stopService(service){
 	service.auth = getCookie("auth")
-	service.fields=JSON.parse(service.fields);
+	// service.fields=JSON.parse(service.fields);
 	alert("Your service is currently terminating.");
 	return axios.post(baseUrl+'/endService', 
 	    service);
