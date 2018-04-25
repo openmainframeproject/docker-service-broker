@@ -353,7 +353,7 @@ app.post("/startGroup", function(req,res)
 app.post("/addService", function(req,res)
 {
     console.log(req.body)
-    con.query("insert into services (name, description, fields, parameters, image) values(?,?,?,?,?)",[req.body.name, req.body.description, JSON.stringify(req.body.fields), req.body.parameters, req.body.image], function (err, result, fields)
+    con.query("insert into services (name, description, fields, parameters, image, version) values(?,?,?,?,?,?)",[req.body.name, req.body.description, JSON.stringify(req.body.fields), req.body.parameters, req.body.image, req.body.version], function (err, result, fields)
      {
        console.log("runningStatus query")
        res.send(result);
