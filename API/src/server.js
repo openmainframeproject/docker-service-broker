@@ -128,8 +128,9 @@ app.get("/getQueuedServices",function(req,res)
 {
     con.query("SELECT * FROM active_services where status='initializing'", function (err, result, fields)
     {
+        console.log(result);
         res.send(result);
-    });
+   });
 });
 
 
@@ -175,7 +176,7 @@ app.post("/startService",function(req,res)
     if(fields != "null")
     {
         fields = fields.replace(/\\/g, '');
-        fields = fields.substring(1,fields.length-1);
+        //fields = fields.substring(1,fields.length-1);
     }
     else
     {
@@ -344,5 +345,21 @@ app.post("/startGroup", function(req,res)
 //      });
 //    }
 });
+
+
+
+
+
+app.post("/addService", function(req,res)
+{
+    console.log(req.body)
+    con.query("insert into services (name, description, fields, parameters, image) values(?,?,?,?,?)",[req.body.name, req.body.description, JSON.stringify(req.body.fields), req.body.parameters, req.body.image], function (err, result, fields)
+     {
+       console.log("runningStatus query")
+       res.send(result);
+     });
+});
+
+
 
 app.listen(3000);
