@@ -58,7 +58,7 @@
             <hr>
             <div>
             <div id="container" style="display:block; height:3rem;" v-for="field in modalService.fields">
-             <input v-model="field.label" :disabled="field.label == 'port' || field.label == 'image' || field.label == 'Service Port'" style="display:inline;float:left" type="input" >
+             <input v-model="field.label" :disabled="field.label == 'port' || field.label == 'image' || field.label == 'service port'" style="display:inline;float:left" type="input" >
              <input v-model="field.display" type="checkbox" style="display:inline;float:right; margin-left:2rem;"> 
              <input v-model="field.value" style="display:inline;float:right" type="input" >
             </div>
@@ -129,7 +129,7 @@ export default {
     return {
       modalGroup:{"name":"", "description":""},
       modalUser:{"username":"", "password":"", "admin":false},
-      modalService:{"name":"", "description":"", "fields":[], "version":"", "image":"", "Service Port":"", "composeFile":""},
+      modalService:{"name":"", "description":"", "fields":[], "version":"", "image":"", "service port":"", "composeFile":""},
       showServiceModal:false,
       showUserModal:false,
       users:null,
@@ -139,18 +139,18 @@ export default {
   methods:{
     closeServiceModal(){
       this.showServiceModal=false;
-      this.modalService={"name":"", "description":"", "fields":[], "version":"", "image":"", "Service Port":"", "composeFile":""}
+      this.modalService={"name":"", "description":"", "fields":[], "version":"", "image":"", "service port":"", "composeFile":""}
     },
     populateServiceModal(){
       this.modalService.fields.push({"label":"port", "value":"", "display":true})
-      this.modalService.fields.push({"label":"Service Port", "value":"", "display":false})
+      this.modalService.fields.push({"label":"service port", "value":"", "display":false})
       this.modalService.fields.push({"label":"image", "value":"", "display":false})
       this.showServiceModal=true;
     },
     submitAndCloseService(){
       addService(this.modalService);
       this.showServiceModal=false;
-      this.modalService={"name":"", "description":"", "fields":[], "version":"", "image":"", "Service Port":"", "composeFile":""};
+      this.modalService={"name":"", "description":"", "fields":[], "version":"", "image":"", "service port":"", "composeFile":""};
       setTimeout(location.reload.bind(location), 1000);
     },
     closeUserModal(){
