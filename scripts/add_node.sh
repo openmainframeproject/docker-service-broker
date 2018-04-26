@@ -1,10 +1,4 @@
-#persistent mariadb file location
-mkdir /data/mysql
-
-#required ports
-iptables -I INPUT -p tcp --dport 3306 -j ACCEPT  #mysql
-iptables -I INPUT -p tcp --dport 8080 -j ACCEPT  #visualizer
-iptables -I INPUT -p tcp --dport 3000 -j ACCEPT  #API
+#open required ports
 iptables -I INPUT -p tcp --dport 2376 -j ACCEPT  #docker swarm
 iptables -I INPUT -p tcp --dport 2377 -j ACCEPT  #docker swarm
 iptables -I INPUT -p tcp --dport 7946 -j ACCEPT  #docker ingress
@@ -19,5 +13,4 @@ do
     iptables -I INPUT -p udp --dport $i -j ACCEPT
 done
 
-#start swarm, append join token to add_node
-docker swarm init > add_node.sh
+
