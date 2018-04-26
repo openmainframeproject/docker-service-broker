@@ -27,12 +27,12 @@ while True:
       try:
         for i in json.loads(fields):
           #print(i)
-          if i['label'] == 'Port':
+          if i['label'] == 'port':
             port = i['value']
       except:
         try:
           print(json.loads(fields))
-          if json.loads(fields)['label'] == 'Port':
+          if json.loads(fields)['label'] == 'port':
             port = json.loads(fields)['value']
         except:
           print("no fields")
@@ -42,12 +42,12 @@ while True:
       try:
         for i in json.loads(fields):
           #print(i)
-          if i['label'] == 'Service Port':
+          if i['label'] == 'service port':
             servicePort = i['value']
       except:
         try:
           print(json.loads(fields))
-          if json.loads(fields)['label'] == 'Service Port':
+          if json.loads(fields)['label'] == 'service port':
             servicePort = json.loads(fields)['value']
         except:
           print("no fields")

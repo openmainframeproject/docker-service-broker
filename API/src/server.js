@@ -352,8 +352,18 @@ app.post("/startGroup", function(req,res)
 
 app.post("/addService", function(req,res)
 {
-    console.log(req.body)
-    con.query("insert into services (name, description, fields, parameters, image, version) values(?,?,?,?,?,?)",[req.body.name, req.body.description, JSON.stringify(req.body.fields), req.body.parameters, req.body.image, req.body.version], function (err, result, fields)
+    var params = '--replicas 5';
+    console.log(req.body);
+    console.log(req.body.fields);
+    for(i = 0;i < req.body.fields.length; i++)
+    {  
+      if(req.body.fields[i].label == 'parameters')
+      {
+        var params = req.body.fields[i].value;
+        console.log(params);
+      }
+    }
+    con.query("insert into services (name, description, fields, parameters, image, version) values(?,?,?,?,?,?)",[req.body.name, req.body.description, JSON.stringify(req.body.fields), params, req.body.image, req.body.version], function (err, result, fields)
      {
        console.log("runningStatus query")
        res.send(result);
