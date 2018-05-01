@@ -1,34 +1,22 @@
-# docker-service-broker
+run install.sh in scripts
 
-SLES
+run generated add_node.sh to all nodes you want to connect to the swarm
+this will bne different every time you run install.sh to create a fresh swarm
 
-on every node
->iptables -I INPUT -p tcp --dport 2377 -j ACCEPT
+install.sh open ports, start the swarm, sets up the database and adds relevant data to add_node.sh
 
-Manager node
->docker swarm init
-
-worker nodes(requires at least one)
-copy paste output of swarm init on manager
-
-start services
->docker stack deploy -c docker-stack.yml [name it]
+if the computer crashes/reboots run open_ports.sh on all nodes, the swarm should still be intact
 
 
-RHEL
+depricated contains old versions of files, unused scripts, etc. of particular interest is autostart, install autostart and startdocker(useful with redhat) though they have not been used for a while and such ill require modification.
 
->iptables -I INPUT -p tcp --dport 2377 -j ACCEPT
 
-start docker daemon:
+Enhancements:
 
->nohup docker daemon -g /data/docker -H tcp://127.0.0.1:2375 -H unix:///var/run/docker.sock &
+>Security: Passwords are stored in plaintext, input is not sanitized, docker containers have root privelages(many such as nginx require a bit of work to get running without root privelages).
 
-start swarm:
+>Volume Management: At the moment one cannot add volumes to containers for persistent storage, this requires unique identifiers for instances of services to avoid multiple instances using the same folder. If this is added actually having persistent storage is trivial, the mariadb service that runs as part of the Service Broker has persistent storage in /data/mysql.
 
->docker swarm init
+>Resuming Service: Currently if the swarm is killed while services are running, while it will show the services as running once restarted the services will not actually be runniing. To fix this one would need to extend the worker to check all services with a status of 'running' against the docker swarm to see if it actually is running.
 
-(will print in console command for other nodes to join)
-
-to run swarm:
-
->docker stack deploy -c docker-stack.yml [name it]
+>Redirecting Services: Currently there is no way to redirect services other than by specifying port on startup, if one wants to cleanly switch between production and testing a dynamic reverse proxy needs to be implemeted, see reverse_proxy in depricated for a start.

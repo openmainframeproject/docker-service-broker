@@ -18,7 +18,7 @@
 --
 -- Table structure for table `active_services`
 --
-
+USE services
 DROP TABLE IF EXISTS `active_services`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -116,6 +116,7 @@ CREATE TABLE `users` (
   `password` varchar(256) DEFAULT NULL,
   `admin` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO users (username, password, admin) VALUES("admin", "admin", 1);
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

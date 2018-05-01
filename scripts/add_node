@@ -1,4 +1,3 @@
-
 #open required ports
 iptables -I INPUT -p tcp --dport 2376 -j ACCEPT  #docker swarm
 iptables -I INPUT -p tcp --dport 2377 -j ACCEPT  #docker swarm
@@ -16,6 +15,3 @@ done
 
 
 
-    docker swarm join \
-    --token SWMTKN-1-3rx7t7qy11jdx43y2rsidwqreijp0f1llpc5003991cza0gm6x-cr8y991dc9b09nkhto7uvzf77 \
-    148.100.98.185:2377 --advertise-addr $(ip addr show eth0 | grep inet -m 1 | awk '{print $2;}' | cut -d / -f1)
