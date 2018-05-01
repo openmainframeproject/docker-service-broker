@@ -5,12 +5,12 @@ run install.sh in scripts
 run generated add_node.sh to all nodes you want to connect to the swarm
 this will be different every time you run install.sh to create a fresh swarm
 
-install.sh open ports, start the swarm, sets up the database and adds relevant data to add_node.sh
+install.sh opens ports, starts the swarm, sets up the database and adds relevant data to add_node.sh
 
 if the computer crashes/reboots run open_ports.sh on all nodes, the swarm should still be intact
 
 
-depricated contains old versions of files, unused scripts, etc. of particular interest is autostart, install autostart and startdocker(useful with redhat) though they have not been used for a while and such ill require modification.
+depricated contains old versions of files, unused scripts, etc. of particular interest is autostart, install autostart and startdocker(useful with redhat) though they have not been used for a while and such will require modification.
 
 
 Enhancements:
