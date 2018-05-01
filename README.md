@@ -3,7 +3,7 @@
 run install.sh in scripts
 
 run generated add_node.sh to all nodes you want to connect to the swarm
-this will bne different every time you run install.sh to create a fresh swarm
+this will be different every time you run install.sh to create a fresh swarm
 
 install.sh open ports, start the swarm, sets up the database and adds relevant data to add_node.sh
 
